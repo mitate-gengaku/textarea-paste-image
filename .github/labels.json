@@ -1,0 +1,133 @@
+[
+  {
+      "name": "feature",
+      "color": "a2eeef",
+      "description": "新規機能リクエスト"
+  },
+  {
+      "name": "test",
+      "color": "fbca04",
+      "description": "テスト関連の課題"
+  },
+  {
+      "name": "task",
+      "color": "6ae75d",
+      "description": "ファイル作成やリファクタリングなどの一般タスク"
+  },
+  {
+      "name": "priority:high",
+      "color": "e50914",
+      "description": "高優先度のタスク"
+  },
+  {
+      "name": "priority:medium",
+      "color": "e7940e",
+      "description": "中優先度のタスク"
+  },
+  {
+      "name": "priority:low",
+      "color": "e7db95",
+      "description": "低優先度のタスク"
+  },
+  {
+      "name": "status:open",
+      "color": "c5def5",
+      "description": "未着手の課題"
+  },
+  {
+      "name": "status:in-progress",
+      "color": "0e8a16",
+      "description": "現在作業中の課題"
+  },
+  {
+      "name": "status:review",
+      "color": "6f42c1",
+      "description": "レビュー中の課題"
+  },
+  {
+      "name": "status:blocked",
+      "color": "b60205",
+      "description": "ブロックされている課題"
+  },
+  {
+      "name": "scope:frontend",
+      "color": "1d76db",
+      "description": "フロントエンド関連の変更"
+  },
+  {
+      "name": "scope:backend",
+      "color": "5319e7",
+      "description": "バックエンド関連の変更"
+  },
+  {
+      "name": "scope:db",
+      "color": "006b75",
+      "description": "データベース関連の変更"
+  },
+  {
+      "name": "scope:infra",
+      "color": "c49ed7",
+      "description": "インフラストラクチャ関連の変更"
+  },
+  {
+      "name": "complexity:easy",
+      "color": "91eb5a",
+      "description": "比較的簡単な課題"
+  },
+  {
+      "name": "complexity:medium",
+      "color": "fbbc88",
+      "description": "中程度の複雑さの課題"
+  },
+  {
+      "name": "complexity:hard",
+      "color": "eb6060",
+      "description": "複雑で難易度の高い課題"
+  },
+  
+  {
+      "name": "bug",
+      "color": "d73a4a",
+      "description": "何かが正常に動作していない"
+  },
+  {
+      "name": "documentation",
+      "color": "0075ca",
+      "description": "ドキュメントの追加や改善"
+  },
+  {
+      "name": "duplicate",
+      "color": "cfd3d7",
+      "description": "既存のIssueと重複している"
+  },
+  {
+      "name": "enhancement",
+      "color": "a2eeef",
+      "description": "既存機能の改善や拡張"
+  },
+  {
+      "name": "good first issue",
+      "color": "7057ff",
+      "description": "初めてのコントリビューターに適した課題"
+  },
+  {
+      "name": "help wanted",
+      "color": "008672",
+      "description": "追加の支援が必要な課題"
+  },
+  {
+      "name": "invalid",
+      "color": "e4e669",
+      "description": "無効または関連性のない課題"
+  },
+  {
+      "name": "question",
+      "color": "d876e3",
+      "description": "さらなる情報が必要な質問"
+  },
+  {
+      "name": "wontfix",
+      "color": "ffffff",
+      "description": "対応しない課題"
+  }
+]
