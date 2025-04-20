@@ -3,13 +3,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
-import React, {
-  useState,
-  useRef,
-  ChangeEvent,
-  ReactNode,
-  DragEvent,
-} from "react";
+import React, { useState, useRef, ChangeEvent, DragEvent } from "react";
 import {
   FieldPath,
   FieldValues,
@@ -20,6 +14,8 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import { Spinner } from "@/components/loading/spinner";
+import { fileSchema } from "@/lib/zod/schema";
+import { upload } from "@vercel/blob/client";
 
 type CustomTextareaProps = React.ComponentProps<typeof Textarea>;
 
@@ -68,6 +64,17 @@ export const CustomTextarea = <
   );
 };
 
+const uploadFile = async (file: File) => {
+  const newBlob = await upload(file.name, file, {
+    access: "public",
+    handleUploadUrl: "/api/files/upload",
+  });
+
+  return {
+    url: newBlob.url,
+  };
+};
+
 type PasteWrapperProps = React.ComponentProps<"div"> & {
   setValue: UseFormSetValue<{
     text: string;
@@ -110,10 +117,32 @@ export const PasteWrapper = ({
     setDragActive(true);
   };
 
-  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    //
+    const prevValue = getValues("text");
+
+    const files = e.dataTransfer.files;
+
+    if (!files) return;
+
+    const parsedResult = fileSchema.safeParse({
+      file: files[0],
+    });
+
+    if (parsedResult.success) {
+      const file = parsedResult.data.file;
+
+      if (!file) return;
+
+      const { url } = await uploadFile(file);
+
+      setValue("text", prevValue + "\n" + `![${file.name}](${url})`, {
+        shouldValidate: true,
+      });
+    } else {
+      return;
+    }
   };
 
   const onPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
