@@ -16,6 +16,7 @@ import {
 import { Spinner } from "@/components/loading/spinner";
 import { fileSchema } from "@/lib/zod/schema";
 import { upload } from "@vercel/blob/client";
+import { toast } from "sonner";
 
 type CustomTextareaProps = React.ComponentProps<typeof Textarea>;
 
@@ -84,21 +85,11 @@ type PasteWrapperProps = React.ComponentProps<"div"> & {
   }>;
 };
 
-const PasteWrapper = ({
-  children,
-  setValue,
-  getValues,
-  className,
-  ...props
-}: PasteWrapperProps) => {
+const PasteWrapper = ({ children, setValue, getValues, className, ...props }: PasteWrapperProps) => {
   const [isDragActive, setDragActive] = useState<boolean>(false);
 
   const onDragEnter = (e: DragEvent<HTMLDivElement>) => {
-    if (
-      e.dataTransfer &&
-      e.dataTransfer.items &&
-      e.dataTransfer.items.length > 0
-    ) {
+    if (e.dataTransfer && e.dataTransfer.items && e.dataTransfer.items.length > 0) {
       e.preventDefault();
       e.stopPropagation();
       setDragActive(true);
@@ -137,15 +128,21 @@ const PasteWrapper = ({
 
       const { url } = await uploadFile(file);
 
-      setValue("text", prevValue + "\n" + `![${file.name}](${url})`, {
+      const fileUrlText = `![${file.name}](${url})`;
+      const textAreaValue = prevValue.length ? prevValue + "\n" + fileUrlText : fileUrlText;
+
+      setValue("text", textAreaValue, {
         shouldValidate: true,
       });
+      setDragActive(false);
     } else {
+      toast.error("エラーです");
+      setDragActive(false);
       return;
     }
   };
 
-  const onPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+  const onPaste = async (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     const prevValue = getValues("text");
@@ -158,6 +155,34 @@ const PasteWrapper = ({
           shouldValidate: true,
         });
       });
+    }
+
+    if (items[0].kind === "file") {
+      const file = items[0].getAsFile();
+
+      const parsedResult = fileSchema.safeParse({
+        file: file,
+      });
+
+      if (parsedResult.success) {
+        const file = parsedResult.data.file;
+
+        if (!file) return;
+
+        const { url } = await uploadFile(file);
+
+        const fileUrlText = `![${file.name}](${url})`;
+        const textAreaValue = prevValue.length ? prevValue + "\n" + fileUrlText : fileUrlText;
+
+        setValue("text", textAreaValue, {
+          shouldValidate: true,
+        });
+        setDragActive(false);
+      } else {
+        toast.error("エラーです");
+        setDragActive(false);
+        return;
+      }
     }
   };
 
@@ -197,9 +222,7 @@ export default function Home() {
   return (
     <div className="w-screen h-screen overflow-x-hidden">
       <form className="space-y-2" onSubmit={onSubmit}>
-        <Button disabled={isSubmitting}>
-          {isSubmitting ? <Spinner className="text-white" /> : "送信"}
-        </Button>
+        <Button disabled={isSubmitting}>{isSubmitting ? <Spinner className="text-white" /> : "送信"}</Button>
         <PasteWrapper setValue={setValue} getValues={getValues}>
           <CustomTextarea name="text" control={control} />
         </PasteWrapper>
