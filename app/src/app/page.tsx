@@ -19,7 +19,7 @@ import { upload } from "@vercel/blob/client";
 
 type CustomTextareaProps = React.ComponentProps<typeof Textarea>;
 
-export const CustomTextarea = <
+const CustomTextarea = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
@@ -84,7 +84,7 @@ type PasteWrapperProps = React.ComponentProps<"div"> & {
   }>;
 };
 
-export const PasteWrapper = ({
+const PasteWrapper = ({
   children,
   setValue,
   getValues,
