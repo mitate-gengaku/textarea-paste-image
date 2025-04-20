@@ -16,7 +16,7 @@ export async function POST(request: Request): Promise<NextResponse> {
           // Otherwise, you're allowing anonymous uploads.
 
           return {
-            allowedContentTypes: ["*"],
+            allowedContentTypes: ["image/jpeg", "image/png", "image/gif", "image/svg+xml"],
             addRandomSuffix: true,
             tokenPayload: JSON.stringify({
               // optional, sent to your server on upload completion
