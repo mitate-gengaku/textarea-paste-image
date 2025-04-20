@@ -4,7 +4,7 @@ export const fileSchema = z.object({
   file: z
     .optional(
       z.instanceof(File, {
-        message: "表紙の画像は必ず選んでください",
+        message: "ファイルは必ず選んでください",
       }),
     )
     .nullable(),
